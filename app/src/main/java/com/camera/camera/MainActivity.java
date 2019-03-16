@@ -5,13 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.FrameLayout;
 
-import com.camera.camera.ui.BlueFragment;
-import com.camera.camera.ui.GreenFragment;
-import com.camera.camera.ui.RedFragment;
-import com.camera.camera.ui.VioletFragment;
-import com.camera.camera.ui.YellowFragment;
 import com.camera.camera.ui.adapters.MyFragmentsPagerAdapter;
 import com.camera.camera.ui.base.BaseFragment;
 
@@ -30,18 +24,14 @@ public class MainActivity extends AppCompatActivity {
         container = findViewById(R.id.container);
         tabLayout = findViewById(R.id.tabLayout);
 
-        Fragment redFragment = new RedFragment();
-        Fragment greenFragment = new GreenFragment();
-        Fragment yellowFragment = new YellowFragment();
-        Fragment blueFragment = new BlueFragment();
-        Fragment violetFragment = new VioletFragment();
+        Fragment photoFragment = new Photo();
+        Fragment portretFragment = new Portret();
+        Fragment videoFragment = new Video();
 
         ArrayList<BaseFragment> fragments = new ArrayList<>();
-        fragments.add((BaseFragment) redFragment);
-        fragments.add((BaseFragment) greenFragment);
-        fragments.add((BaseFragment) yellowFragment);
-        fragments.add((BaseFragment) violetFragment);
-        fragments.add((BaseFragment) blueFragment);
+        fragments.add((BaseFragment) photoFragment);
+        fragments.add((BaseFragment) portretFragment);
+        fragments.add((BaseFragment) videoFragment);
 
         MyFragmentsPagerAdapter adapter = new MyFragmentsPagerAdapter(getSupportFragmentManager());
         adapter.setList(fragments);

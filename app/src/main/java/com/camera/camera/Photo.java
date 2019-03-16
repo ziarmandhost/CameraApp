@@ -1,4 +1,4 @@
-package com.camera.camera.ui;
+package com.camera.camera;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
@@ -8,32 +8,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.camera.camera.R;
 import com.camera.camera.ui.base.BaseFragment;
 
-public class YellowFragment extends BaseFragment {
+public class Photo extends BaseFragment {
 
-    private YellowViewModel mViewModel;
+    private PhotoViewModel mViewModel;
 
-    public static YellowFragment newInstance() {
-        return new YellowFragment();
+    public static Photo newInstance() {
+        return new Photo();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.yellow_fragment, container, false);
+        return inflater.inflate(R.layout.photo_fragment, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(YellowViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(PhotoViewModel.class);
         // TODO: Use the ViewModel
     }
 
     @Override
     public String getName() {
-        return "YellowFragment";
+        return "Фото";
     }
 }

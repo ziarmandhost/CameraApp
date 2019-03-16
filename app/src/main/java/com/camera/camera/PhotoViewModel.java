@@ -1,7 +1,7 @@
-package com.camera.camera.ui;
+package com.camera.camera;
 
 import android.arch.lifecycle.ViewModel;
 
-public class RedViewModel extends ViewModel {
+public class PhotoViewModel extends ViewModel {
     // TODO: Implement the ViewModel
 }

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Camera</string>
-    <string name="center">Center</string>
-    <string name="left">Left</string>
-    <string name="right">Right</string>
+    <string name="shutter">Кнопка "Фото"</string>
+    <string name="settings">Кнопка "Настройки"</string>
+    <string name="hdr">Включить HDR</string>
+    <string name="nohdr">Выключить HDR</string>
 </resources>
