@@ -19,7 +19,7 @@ public class Photo extends BaseFragment {
 
     private PhotoViewModel mViewModel;
     private SurfaceView surfaceView;
-    private SurfaceHolder mHolder;
+    private SurfaceHolder surfaceHolder;
 
     public static Photo newInstance() {
         return new Photo();
