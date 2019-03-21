@@ -1,74 +1,59 @@
 package com.camera.camera;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Rect;
-import android.view.Surface;
+import android.hardware.Camera;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-public class Preview extends SurfaceView implements SurfaceHolder {
-    public Preview(Context context) {
+import java.io.IOException;
+
+import static android.content.ContentValues.TAG;
+
+public class Preview extends SurfaceView implements SurfaceHolder.Callback {
+    private Camera mCamera;
+    private SurfaceHolder mHolder;
+
+    public Preview(Context context, Camera camera) {
         super(context);
+        mCamera = camera;
+        mHolder = getHolder();
+        mHolder.addCallback(this);
     }
 
     @Override
-    public void addCallback(Callback callback) {
-
-    }
-
-    @Override
-    public void removeCallback(Callback callback) {
-
-    }
-
-    @Override
-    public boolean isCreating() {
-        return false;
-    }
-
-    @Override
-    public void setType(int type) {
+    public void surfaceCreated(SurfaceHolder holder){
+        try {
+            mCamera.setPreviewDisplay(holder);
+            mCamera.startPreview();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
     @Override
-    public void setFixedSize(int width, int height) {
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+        if (mHolder.getSurface() == null){
+            return;
+        }
 
+        try {
+            mCamera.stopPreview();
+        } catch (Exception e){
+        }
+
+        try {
+            mCamera.setPreviewDisplay(mHolder);
+            mCamera.startPreview();
+
+        } catch (Exception e){
+            Log.d(TAG, "Error starting camera preview: " + e.getMessage());
+        }
     }
 
     @Override
-    public void setSizeFromLayout() {
+    public void surfaceDestroyed(SurfaceHolder holder) {
 
-    }
-
-    @Override
-    public void setFormat(int format) {
-
-    }
-
-    @Override
-    public Canvas lockCanvas() {
-        return null;
-    }
-
-    @Override
-    public Canvas lockCanvas(Rect dirty) {
-        return null;
-    }
-
-    @Override
-    public void unlockCanvasAndPost(Canvas canvas) {
-
-    }
-
-    @Override
-    public Rect getSurfaceFrame() {
-        return null;
-    }
-
-    @Override
-    public Surface getSurface() {
-        return null;
     }
 }

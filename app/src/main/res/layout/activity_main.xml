@@ -123,9 +123,15 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
+            android:id="@+id/capture"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:background="@drawable/push" />
+            android:adjustViewBounds="false"
+            android:background="@drawable/shutter3b"
+            android:cropToPadding="false"
+            android:scaleType="fitCenter"
+            android:visibility="visible"
+            tools:srcCompat="@drawable/shutter3b" />
 
     </LinearLayout>
 

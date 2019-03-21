@@ -4,22 +4,23 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
+import android.hardware.camera2.CameraDevice;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.camera.camera.ui.base.BaseFragment;
 
 public class Photo extends BaseFragment {
 
     private PhotoViewModel mViewModel;
-    private SurfaceView surfaceView;
-    private SurfaceHolder surfaceHolder;
+    private FrameLayout preview;
+    private Camera mCamera;
+    private Preview mPreview;
 
     public static Photo newInstance() {
         return new Photo();
@@ -29,9 +30,26 @@ public class Photo extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(PhotoViewModel.class);
-        surfaceView = getView().findViewById(R.id.surfaceView);
-        checkCameraHardware(getContext());
-        getCameraInstance();
+
+        mCamera = getCameraInstance();
+        mPreview = new Preview(getContext(), mCamera);
+        preview = getView().findViewById(R.id.cameraPreview);
+        preview.addView(mPreview);
+    }
+
+    public static Camera getCameraInstance(){
+        Camera c = null;
+        try {
+            c = Camera.open();
+        }
+        catch (Exception e){
+        }
+        return c;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -43,26 +61,5 @@ public class Photo extends BaseFragment {
     @Override
     public String getName() {
         return "Фото";
-    }
-
-    private boolean checkCameraHardware(Context context) {
-        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
-            // this device has a camera
-            return true;
-        } else {
-            // no camera on this device
-            return false;
-        }
-    }
-
-    public static Camera getCameraInstance(){
-        Camera c = null;
-        try {
-            c = Camera.open();// attempt to get a Camera instance
-        }
-        catch (Exception e){
-            // Camera is not available (in use or does not exist)
-        }
-        return c; // returns null if camera is unavailable
     }
 }
