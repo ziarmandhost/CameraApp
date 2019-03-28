@@ -9,8 +9,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
-import com.camera.camera.Photo;
-
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
     private static final String TAG = null;
 
@@ -108,6 +106,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     void stopPreviewAndFreeCamera() {
         if (mCamera != null) {
             mCamera.stopPreview();
+            mCamera.release();
             mCamera = null;
         }
     }

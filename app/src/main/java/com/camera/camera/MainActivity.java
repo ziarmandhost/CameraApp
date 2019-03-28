@@ -1,22 +1,13 @@
 package com.camera.camera;
 
-import android.Manifest;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Camera;
-import android.os.Build;
-import android.support.annotation.NonNull;
+import android.hardware.Camera;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.camera.camera.ui.adapters.MyFragmentsPagerAdapter;
@@ -28,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     ViewPager container;
     TabLayout tabLayout;
+    ImageView captureBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +27,20 @@ public class MainActivity extends AppCompatActivity {
 
         hideSystemUI();
         setContentView(R.layout.activity_main);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
+        initTabs();
+
+        captureBtn = findViewById(R.id.capture);
+        captureBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Camera view clicked", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void initTabs () {
         container = findViewById(R.id.container);
         tabLayout = findViewById(R.id.tabLayout);
 
@@ -47,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
         fragments.add(photoFragment);
         fragments.add(portretFragment);
         fragments.add(videoFragment);
+
+        container.setOffscreenPageLimit(3);
 
         MyFragmentsPagerAdapter adapter = new MyFragmentsPagerAdapter(getSupportFragmentManager());
         adapter.setList(fragments);
