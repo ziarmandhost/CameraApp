@@ -127,11 +127,11 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:adjustViewBounds="false"
-            android:background="@drawable/shutter3b"
+            android:background="@drawable/push"
             android:cropToPadding="false"
             android:scaleType="fitCenter"
             android:visibility="visible"
-            tools:srcCompat="@drawable/shutter3b" />
+            tools:srcCompat="@drawable/push" />
 
     </LinearLayout>
 
