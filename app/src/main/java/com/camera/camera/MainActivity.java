@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.camera.camera.ui.adapters.MyFragmentsPagerAdapter;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     TabLayout tabLayout;
     ImageView captureBtn;
     ImageView changeCamera;
+    RelativeLayout relativeLayout;
 
     BaseFragment photo;
     BaseFragment portret;
