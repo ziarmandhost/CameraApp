@@ -1,6 +1,9 @@
 package com.camera.camera;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.camera.camera.ui.base.BaseFragment;
 import com.camera.camera.ui.components.CameraPreview;
@@ -21,7 +25,12 @@ public class Photo extends BaseFragment {
     private CameraPreview mPreview;
     FrameLayout preview;
 
-    private boolean cameraFront = false;
+    private Camera.PictureCallback mPicture;
+    public static Bitmap bitmap;
+
+    public boolean cameraFront = false;
+
+    Camera.Parameters params;
 
     public static Photo newInstance() {
         return new Photo();
@@ -38,22 +47,62 @@ public class Photo extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(PhotoViewModel.class);
 
+        // CAMERA INIT
+            mCamera = getCameraInstance();
+            mCamera.setDisplayOrientation(90);
+
+            params = mCamera.getParameters();
+
+            // There are camera config
+                setAutofocus();
+
+            mPreview = new CameraPreview(getContext(), mCamera);
+            preview = getView().findViewById(R.id.cameraPreview);
+            preview.addView(mPreview);
+            mCamera.startPreview();
+        // CAMERA INIT END
+
+    }
+
+    @Override
+    public void switchCamera() {
+        releaseCamera();
+
+        cameraFront = !cameraFront;
         mCamera = getCameraInstance();
-        mPreview = new CameraPreview(getContext(), mCamera);
-        preview = (FrameLayout) getView().findViewById(R.id.cameraPreview);
-        preview.addView(mPreview);
+        mCamera.setDisplayOrientation(90);
+        mPreview.refreshCamera(mCamera);
+    }
+
+    public void setAutofocus () {
+        if (params.getSupportedFocusModes().contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
+            params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+        }
+        mCamera.setParameters(params);
     }
 
     public Camera getCameraInstance(){
         Camera c = null;
         try {
-//            c = Camera.open(findFrontFacingCamera()); // Фронталка
-            c = Camera.open(findBackFacingCamera());
+            if (cameraFront) {
+                c = Camera.open(findFrontFacingCamera());
+            }
+            else {
+                c = Camera.open(findBackFacingCamera());
+            }
         }
         catch (Exception e){
             Log.d("ID", "Camera doesn't exist!");
         }
         return c;
+    }
+    private void releaseCamera() {
+        if (mCamera != null) {
+            mCamera.stopPreview();
+            mCamera.setPreviewCallback(null);
+            mCamera.release();
+            mCamera = null;
+        }
     }
 
     private int findBackFacingCamera() {
@@ -71,7 +120,6 @@ public class Photo extends BaseFragment {
         }
         return cameraId;
     }
-
     private int findFrontFacingCamera() {
         int cameraId = -1;
         int numberOfCameras = Camera.getNumberOfCameras();
@@ -87,8 +135,7 @@ public class Photo extends BaseFragment {
         return cameraId;
     }
 
-    @Override
-    public String getName() {
+    @Override public String getName() {
         return "Фото";
     }
 }

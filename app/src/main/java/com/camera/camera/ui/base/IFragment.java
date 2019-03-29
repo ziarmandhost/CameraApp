@@ -1,5 +1,9 @@
 package com.camera.camera.ui.base;
 
+import android.hardware.Camera;
+import android.view.View;
+
 interface IFragment {
-    public String getName();
+    String getName();
+    void switchCamera();
 }

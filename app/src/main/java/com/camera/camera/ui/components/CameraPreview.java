@@ -7,16 +7,12 @@ import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
+
+import java.io.IOException;
 
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
-    private static final String TAG = null;
-
     private SurfaceHolder mHolder;
     private Camera mCamera;
-    private CameraPreview mPreview;
-
-    Camera.Parameters params;
 
     public CameraPreview(Context context, Camera camera) {
         super(context);
@@ -28,13 +24,13 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     public void surfaceCreated(SurfaceHolder holder) {
         try {
-            mCamera = Camera.open();
-            mCamera.setPreviewDisplay(holder);
-            mCamera.setPreviewDisplay(mHolder);
-            mCamera.startPreview();
+            if (mCamera == null) {
+                mCamera.setPreviewDisplay(holder);
+                mCamera.startPreview();
+            }
         }
-        catch(Exception e) {
-            Log.e(TAG, "Surface Created Error");
+        catch (IOException e) {
+            Log.d("ID", "Error setting camera preview: " + e.getMessage());
         }
     }
 
@@ -45,37 +41,36 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             mCamera.release();
             mCamera = null;
         }
-        Log.e("surfaceDestroyed", "Surface Destroyed");
-    }
-
-    public void surfacePaused(SurfaceHolder holder) {
-        Log.e("TABACT", "Surface Paused");
-        mPreview.setVisibility(View.INVISIBLE);
+        Log.e("ID", "Surface Destroyed");
     }
 
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
-        // If preview can change or rotate, we need to take care of those events here.
-        // Make sure to stop the preview before resizing or reformatting it.
+        refreshCamera(mCamera);
+    }
 
-        if (mHolder.getSurface() == null) {return;}
+    public void refreshCamera(Camera camera) {
+        if (mHolder.getSurface() == null) { return; }
 
         try {
             mCamera.stopPreview();
         }
-        catch (Exception e){
-            Log.d(TAG, "Zoom error: " + e.getMessage());
+        catch (Exception e) {
+            Log.d("ID", e.getMessage());
         }
 
+        setCamera(camera);
+
         try {
-            mCamera.setDisplayOrientation(90);
             mCamera.setPreviewDisplay(mHolder);
             mCamera.startPreview();
         }
-        catch (Exception e){
-            Log.d(TAG, "Error starting camera preview: " + e.getMessage());
+        catch (Exception e) {
+            Log.d("ID", "Error starting camera preview: " + e.getMessage());
         }
     }
-
+    public void setCamera(Camera camera) {
+        mCamera = camera;
+    }
 
     public static void setCameraDisplayOrientation(Activity activity, int cameraId, android.hardware.Camera camera) {
         android.hardware.Camera.CameraInfo info = new android.hardware.Camera.CameraInfo();
@@ -101,13 +96,5 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
 
         camera.setDisplayOrientation(result);
-    }
-
-    void stopPreviewAndFreeCamera() {
-        if (mCamera != null) {
-            mCamera.stopPreview();
-            mCamera.release();
-            mCamera = null;
-        }
     }
 }

@@ -111,13 +111,12 @@
             android:text="Видео" />
     </android.support.design.widget.TabLayout>
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="103dp"
         android:background="@android:color/black"
-        android:gravity="center_horizontal|center_vertical"
-        android:orientation="horizontal"
+        android:gravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -131,8 +130,22 @@
             android:cropToPadding="false"
             android:scaleType="fitCenter"
             android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@drawable/push" />
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/changeCamera"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="32dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/stat_notify_sync_noanim" />
+
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>
