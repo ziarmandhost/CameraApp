@@ -1,8 +1,11 @@
 package com.camera.camera;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,7 +20,6 @@ import com.camera.camera.ui.base.BaseFragment;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
     ViewPager container;
     TabLayout tabLayout;
     ImageView captureBtn;
@@ -34,6 +36,10 @@ public class MainActivity extends AppCompatActivity {
         hideSystemUI();
         setContentView(R.layout.activity_main);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        if (!checkPermissions()) {
+            setPermissions();
+        }
 
         initTabs();
 
@@ -55,6 +61,19 @@ public class MainActivity extends AppCompatActivity {
                 getActiveFragment().switchCamera();
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 101:
+                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getApplicationContext(), "This application needs camera permissions!", Toast.LENGTH_LONG).show();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
     private void initTabs () {
@@ -79,6 +98,24 @@ public class MainActivity extends AppCompatActivity {
     }
     private void hideSystemUI () {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+    private boolean checkPermissions () {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            return false;
+        }
+        return true;
+    }
+    private void setPermissions () {
+        ActivityCompat.requestPermissions(this,
+                new String[]{
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.RECORD_AUDIO
+                },
+                101);
     }
 
     private BaseFragment getActiveFragment () {
