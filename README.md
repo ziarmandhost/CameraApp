@@ -13,7 +13,7 @@ Camera app is designed to improve the native camera! Written using Camera2 api.
   - Native image filters support
   - Special mode "QR code scanner"
 
-##### You can also:
+### You can also:
   - Save photos to phone and sd card
   - Make a delay before taking a photo (3, 5 or 10 seconds)
   - Turn on the grid for easy photographing
