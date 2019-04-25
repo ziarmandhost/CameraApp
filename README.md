@@ -2,7 +2,7 @@
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/facebook/react/blob/master/LICENSE) [![GitHub license](https://img.shields.io/badge/Android%20API-22%2B-brightgreen.svg)](https://developer.android.com/preview)
 
-Camera app is designed to improve the native camera! Written using Camera2 api.
+Camera app is designed to improve the native camera! Written using Camera2 API!
 
 # Features :
 
